@@ -29,5 +29,17 @@ status and the "resume here" point are in `NOTES.md`.
 
 ## Tech
 
-- To be decided when the game concept is known (see PROJECT.md §5). Must work as
-  static files on GitHub Pages.
+- Vite + TypeScript, no UI framework (`src/ui/dom.ts` has a tiny `h()` helper).
+- `npm run dev` (local), `npm test` (Vitest), `npm run build` (type-check + build).
+- Deploy: `.github/workflows/deploy.yml` — push to `main` → tests → build →
+  GitHub Pages. `vite.config.ts` sets `base: "/school-game/"`.
+- Layout: `src/music/` (theory facts, SVG notation, Web Audio sounds),
+  `src/quiz/` (question types + engine), `src/topics/` (one file per island:
+  learning content + question generators), `src/ui/` (screens),
+  `src/i18n/sv.ts` (all UI text).
+- **Text:** UI strings live in `src/i18n/sv.ts`. Each island's teaching text and
+  questions live in its own `src/topics/<id>.ts` (content, Swedish only).
+- Every new island must pass `src/topics/topics.test.ts` (200 random rounds:
+  well-formed questions, no duplicate options).
+- Music facts (note names, lengths, Swedish naming) go in `src/music/theory.ts`
+  with tests — correctness matters, kids are revising for a test.

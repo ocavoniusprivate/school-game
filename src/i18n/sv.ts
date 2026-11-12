@@ -1,0 +1,46 @@
+// All Swedish text for the game's own screens (buttons, headings, feedback).
+// The learning content and questions for each island live in src/topics/.
+
+export const sv = {
+  appTitle: "Notlära-äventyret",
+  appSubtitle: "Plugga till notlära-förhöret – och ha kul samtidigt!",
+  mascotName: "Noa",
+  mascotHello: "Hej! Jag är Noa 🎵 Välj en ö och samla stjärnor. Klarar du alla öar är du redo för förhöret!",
+  starsTotal: (n: number, max: number) => `${n} av ${max} stjärnor`,
+  comingSoon: "Snart!",
+  finalTitle: "Förhöret",
+  finalTagline: "Blandade frågor från alla öar",
+  learn: "Lär dig",
+  play: "Spela!",
+  backToMap: "Till kartan",
+  listen: "🔊 Lyssna",
+  question: (i: number, n: number) => `Fråga ${i} av ${n}`,
+  next: "Nästa →",
+  seeResult: "Se resultat",
+  correct: ["Rätt! 🎉", "Snyggt! ⭐", "Helt rätt! 👏", "Bra jobbat! 🎵"],
+  wrong: "Inte riktigt…",
+  rightAnswer: (a: string) => `Rätt svar: ${a}`,
+  orderHint: "Tryck i rätt ordning:",
+  orderUndo: "Börja om",
+  orderCheck: "Kolla",
+  tapStart: "Starta",
+  tapButton: "TRYCK",
+  tapGetReady: "Lyssna på fyra klick… sen trycker du i takt!",
+  tapNow: "Tryck nu – i takt!",
+  tapResult: (hit: number, total: number) => `${hit} av ${total} tryck i takt`,
+  resultTitle: (stars: number) =>
+    stars === 3 ? "Fantastiskt!" : stars === 2 ? "Riktigt bra!" : stars === 1 ? "Bra kämpat!" : "Öva lite till!",
+  resultScore: (c: number, n: number) => `${c} rätt av ${n}`,
+  newRecord: "Nytt rekord! 🏆",
+  playAgain: "Spela igen",
+  readAgain: "Läs igen",
+  sound: "Ljud",
+  soundOn: "🔊",
+  soundOff: "🔇",
+  resetProgress: "Nollställ stjärnor",
+  resetConfirm: "Vill du börja om och nollställa alla stjärnor?",
+  notFound: "Hittade inte den sidan.",
+  footer: "Ett övningsspel för notlära · Proof of concept",
+};
+
+export type Strings = typeof sv;
