@@ -1,17 +1,80 @@
 // Sounds made in the browser with the Web Audio API — no sound files needed.
-// Browsers only allow audio after the player has tapped something, so the
-// audio context is created lazily on the first sound.
+//
+// Two browser rules make this tricky on phones:
+// 1. Audio may only start after the player has tapped something. `unlockAudio`
+//    runs on the very first tap anywhere and wakes the audio up.
+// 2. On iPhone, Web Audio is silenced by the ringer/silent switch unless the
+//    page tells iOS this is media playback. We do that with
+//    `navigator.audioSession` (newer iOS) and by playing a silent <audio>
+//    element (older iOS), which switches the page to "media" sound.
 
 import { midiToFrequency } from "./theory";
 
 let ctx: AudioContext | null = null;
 let muted = false;
+let unlocked = false;
 const active = new Set<AudioScheduledSourceNode>();
 
 function audio(): AudioContext {
   ctx ??= new AudioContext();
-  if (ctx.state === "suspended") void ctx.resume();
+  if (ctx.state !== "running") void ctx.resume();
   return ctx;
+}
+
+/** A tiny silent WAV file, made in code (0.1 s of silence). */
+function silentWavUrl(): string {
+  const rate = 8000;
+  const samples = rate / 10;
+  const buffer = new ArrayBuffer(44 + samples);
+  const view = new DataView(buffer);
+  const text = (offset: number, s: string) => [...s].forEach((c, i) => view.setUint8(offset + i, c.charCodeAt(0)));
+  text(0, "RIFF");
+  view.setUint32(4, 36 + samples, true);
+  text(8, "WAVE");
+  text(12, "fmt ");
+  view.setUint32(16, 16, true); // chunk size
+  view.setUint16(20, 1, true); // PCM
+  view.setUint16(22, 1, true); // mono
+  view.setUint32(24, rate, true);
+  view.setUint32(28, rate, true); // byte rate
+  view.setUint16(32, 1, true); // block align
+  view.setUint16(34, 8, true); // 8-bit
+  text(36, "data");
+  view.setUint32(40, samples, true);
+  for (let i = 0; i < samples; i++) view.setUint8(44 + i, 128); // 8-bit silence
+  return URL.createObjectURL(new Blob([buffer], { type: "audio/wav" }));
+}
+
+/** Call from a tap/click handler: makes sound work on phones (see top of file). */
+export function unlockAudio() {
+  if (unlocked) return;
+  unlocked = true;
+  const session = (navigator as Navigator & { audioSession?: { type: string } }).audioSession;
+  if (session) {
+    try {
+      session.type = "playback";
+    } catch {
+      // not supported
+    }
+  }
+  try {
+    const el = new Audio(silentWavUrl());
+    el.setAttribute("playsinline", "");
+    void el.play().catch(() => {});
+  } catch {
+    // no <audio> support
+  }
+  const ac = audio();
+  // A one-sample silent buffer started inside the tap fully wakes the context.
+  const src = ac.createBufferSource();
+  src.buffer = ac.createBuffer(1, 1, 22050);
+  src.connect(ac.destination);
+  src.start(0);
+}
+
+/** Whether the browser is currently letting us play sound. */
+export function audioState(): AudioContextState | "not-started" {
+  return ctx ? ctx.state : "not-started";
 }
 
 export function setMuted(value: boolean) {

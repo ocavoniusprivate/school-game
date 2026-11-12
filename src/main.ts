@@ -1,6 +1,6 @@
 import "./style.css";
 import { getTopic } from "./topics";
-import { stopAll } from "./music/audio";
+import { stopAll, unlockAudio } from "./music/audio";
 import { sv } from "./i18n/sv";
 import { h } from "./ui/dom";
 import { mapScreen } from "./ui/map";
@@ -37,5 +37,10 @@ function notFound(): HTMLElement {
 }
 
 initSound();
+// Wake up sound on the first tap anywhere (phones only allow audio after a
+// tap; see src/music/audio.ts). iOS needs it on touchend/click specifically.
+for (const event of ["touchend", "click", "keydown"]) {
+  window.addEventListener(event, unlockAudio, { capture: true, passive: true });
+}
 window.addEventListener("hashchange", route);
 route();
