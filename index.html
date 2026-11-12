@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="fi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>School Game</title>
+    <meta name="description" content="School Game — proof of concept, coming soon." />
+    <!-- Proof of concept: keep it out of search engines. -->
+    <meta name="robots" content="noindex, nofollow" />
+    <style>
+      :root {
+        --bg: #f4f7fb;
+        --fg: #14213d;
+        --muted: #5b6b85;
+        --accent: #ff7a00;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0f1626;
+          --fg: #eef2f8;
+          --muted: #9fb0c8;
+        }
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 16px;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        text-align: center;
+      }
+      .emoji { font-size: 4rem; }
+      h1 { margin: 0.5rem 0 0.25rem; font-size: 2.25rem; }
+      p { margin: 0.25rem 0; color: var(--muted); }
+      .badge {
+        display: inline-block;
+        margin-top: 1rem;
+        padding: 0.25rem 0.75rem;
+        border-radius: 999px;
+        background: var(--accent);
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.875rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="emoji" aria-hidden="true">🎒</div>
+      <h1>School Game</h1>
+      <p>Tulossa pian · Coming soon</p>
+      <span class="badge">Proof of concept</span>
+    </main>
+  </body>
+</html>
