@@ -12,6 +12,16 @@ _Last updated: 2026-11-12_
   learn pages, sounds and questions. Verified: unit tests, build, headless-Edge
   play-through of all three islands at phone size.
 
+- 2026-11-12: Sound fix for iPhone silent switch (`unlockAudio` in
+  `src/music/audio.ts`). Verified sound output in Chromium; **not verified on
+  an iPhone** — Oscar reported no sound before the fix (device unknown).
+
+## ⏸️ Paused 2026-11-12
+
+Oscar returned to Hangoby after this "fun test". The site stays live until he
+decides to take it down (repo Settings → Pages). First thing when resuming: ask
+whether sound now works on his phone (iPhone or Android?).
+
 ## ▶️ Resume here
 
 - **Next:** MVP step 2 — the other 8 islands (Notskrift, Förtecken, Pauser,
